@@ -1,0 +1,32 @@
+import argparse
+import os
+
+def modify_first_line(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+
+        if lines:
+            new_first_line = f'>{os.path.basename(file_path)}\n'
+            lines[0] = new_first_line
+
+            with open(file_path, 'w') as file:
+                file.writelines(lines)
+
+            print(f'the first row of"{file_path}"has been modified to"{new_first_line.strip()}"')
+        else:
+            print(f'file"{file_path}" is empty can not be modified')
+    except Exception as e:
+        print(f'modify name"{file_path}"meets error：{e}')
+
+
+def main():
+    parser = argparse.ArgumentParser(description="modify fasta name identity to file name")
+    parser.add_argument("-i","--input",required=True,help="input file you want to change inside fasta name")
+    args = parser.parse_args()
+
+    modify_first_line(args.input)
+
+
+if __name__ == "__main__":
+    main()
