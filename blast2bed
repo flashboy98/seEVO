@@ -1,0 +1,25 @@
+import argparse
+
+def extract_columns(input_file, output_file):
+    try:
+        with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
+            first_line = infile.readline().strip().split('\t')
+            if len(first_line) >= 10:
+                extracted_info = '\t'.join([first_line[1], first_line[8], first_line[9]])
+                outfile.write(extracted_info + '\n')
+                print(f"Extracted info from {input_file} and saved to {output_file}")
+            else:
+                print(f"Skipping file {input_file} due to insufficient columns in the first line")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+def main():
+    parser = argparse.ArgumentParser(description="extract column 2,9,10 of the first row to generate a bed format file")
+    parser.add_argument("-i","--input",required=True,help="input outfmt6 file")
+    parser.add_argument("-o", "--output", required=True, help="output bed file")
+    args = parser.parse_args()
+
+    extract_columns(args.input, args.output)
+
+if __name__ == "__main__":
+    main()
