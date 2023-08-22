@@ -1,0 +1,8 @@
+for file in $(find *merged.bed);do
+    if [ -s ${file} ]; then
+        echo "copy ${file}"
+        cp ${file} /home/wangzicheng/work/se/assemblies/sat
+    else
+        echo "skip ${file} since it is empty"
+fi
+done
