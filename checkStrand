@@ -1,0 +1,31 @@
+import argparse
+
+def identify_gene_strand(line):
+    columns = line.strip().split()
+    if len(columns) >= 3:
+        second_column = float(columns[1])
+        third_column = float(columns[2])
+        if second_column > third_column:
+            return "gene is on negative strand"
+        elif third_column > second_column:
+            return "gene is on positive strand"
+    return "can not be identified"
+
+def fileInput(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            first_line = file.readline()
+            gene_strand = identify_gene_strand(first_line)
+            print(gene_strand)
+    except Exception as e:
+        print(f'error occured：{e}')
+
+def main():
+    parser = argparse.ArgumentParser(description="identify gene strand")
+    parser.add_argument("-i","--input",required=True,help="input bed file")
+    args = parser.parse_args()
+
+    fileInput(args.input)
+
+if __name__ == "__main__":
+    main()
