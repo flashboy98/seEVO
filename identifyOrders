@@ -1,0 +1,31 @@
+import argparse
+
+def compare_values(file1_values, file2_values):
+    if file1_values[1] > file2_values[1] and file1_values[1] > file2_values[2] and file1_values[2] > file2_values[1] and file1_values[2] > file2_values[2]:
+        return "orf3 falls behind"
+    elif file1_values[1] < file2_values[1] and file1_values[1] < file2_values[2] and file1_values[2] < file2_values[1] and file1_values[2] < file2_values[2]:
+        return "orf3 is ahead"
+    else:
+        return "orf3 crosses orf4"
+
+def openfile(file1_path,file2_path):
+    try:
+        with open(file1_path, 'r') as file1, open(file2_path, 'r') as file2:
+            file1_values = list(file1.readline().strip().split())
+            file2_values = list(file2.readline().strip().split())
+
+            result = compare_values(file1_values, file2_values)
+            print(result)
+    except Exception as e:
+        print(f'error occured：{e}')
+
+def main():
+    parser = argparse.ArgumentParser(description="extract column 2,9,10 of the first row to generate a bed format file")
+    parser.add_argument("-i","--input1",required=True,help="input orf3bed file")
+    parser.add_argument("-t", "--input2", required=True, help="input orf4bed file")
+    args = parser.parse_args()
+
+    openfile(args.input1,args.input2)
+
+if __name__ == "__main__":
+    main()
