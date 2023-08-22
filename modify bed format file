@@ -1,0 +1,35 @@
+import argparse
+
+def modify_bed_file(input_file,output_file):
+        try:
+                with open(input_file, 'r') as input,open(output_file, 'w') as output:
+                        firstline = input.readline()
+                        columns = firstline.strip().split()
+                        if len(columns) >= 3:
+                                second_column = float(columns[1])
+                                third_column = float(columns[2])
+                                if second_column > third_column:
+                                        print (f"{output_file} is on negative strand")
+                                        new_row = [columns[0], columns[2], columns[1]]
+                                        output.write('\t'.join(new_row) + '\t-\n')
+                                elif third_column > second_column:
+                                        print (f"{output_file} is on positive strand")
+                                        new_row = [columns[0], columns[1], columns[2]]
+                                        output.write('\t'.join(new_row) + '\t+\n')
+                                else:
+                                        print ("modify bed file meets error")
+                        else:
+                                print ("insufficient data")
+        except Exception as e:
+                print(f'read old bed file meets error：{e}')
+
+def main():
+        parser = argparse.ArgumentParser(description="identify gene strand")
+        parser.add_argument("-i","--input",required=True,help="input bed file")
+        parser.add_argument("-o","--output",required=True,help="out modified bed file")
+        args = parser.parse_args()
+
+        modify_bed_file(args.input,args.output)
+
+if __name__ == "__main__":
+        main()
